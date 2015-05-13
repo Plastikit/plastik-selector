@@ -1,0 +1,268 @@
+<!--
+  This file was adapted from the Polymer Project. Plastikit is not affiliated with the original
+  authors.
+  
+  The original copyright notice is below.
+-->
+<!--
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-selector/iron-selectable.html">
+
+<!--
+`Polymer.PlastikMultiSelectableBehavior` provides advanced multiselect functionality
+-->
+
+<script>
+
+  Polymer.PlastikMultiSelectableBehavior = [
+    {
+      properties: {
+        /**
+         * If true, multiple items can be selected at a time.
+         *
+         * @attribute multi
+         * @type Boolean
+         * @default false
+         */
+        multi: {
+          type: Boolean,
+          value: false,
+          observer: 'multiChanged'
+        },
+        /**
+         * If true, at least one item must be selected at all times.
+         *
+         * @attribute required
+         * @type Boolean
+         * @default false
+         */
+        required: {
+          type: Boolean,
+          value: false
+        },
+        /**
+         * Sets the attribute that identifies the reset item. The reset item, when selected,
+         * deselects the rest of the items. Requires `multi` to be set to true. Setting
+         * `attrForReset` to a value disables the functionality provided by `required`.
+         *
+         * @attribute attrForReset
+         * @type String
+         */
+        attrForReset: {
+          type: String,
+          value: null
+        },
+        /**
+         * Gets or sets the array of currently selected values when `multi` is true. If
+         * `multi` is false, use `selected` instead to obtain or set a single value.
+         *
+         * @attribute selectedValues
+         * @type Array
+         */
+        selectedValues: {
+          type: Array,
+          notify: true
+        },
+        /**
+         * Gets the array of currently selected items.
+         *
+         * @attribute selectedItems
+         * @type Array
+         */
+        selectedItems: {
+          type: Array,
+          readOnly: true,
+          notify: true
+        },
+      },
+      observers: [
+        '_updateSelected(attrForSelected, selectedValues)',
+        '_validateSelection(required, attrForSelected, selected, selectedValues)'
+      ],
+      /**
+       * Selects the given value. If `multi` is true, toggles the selected state of `value`.
+       *
+       * @method select
+       * @param {string} value the value to select (or toggle, if `multi` is true).
+       */
+      select: function(value) {
+        if (!this._validateValue(value))
+          return;
+        if (this.multi) {
+          if (this.selectedValues) {
+            this._toggleSelected(value);
+          } else {
+            this.selectedValues = [value];
+          }
+        } else {
+          this.selected = value;
+        }
+      },
+      ready: function() {
+        this._refreshStyles();
+      },
+      multiChanged: function(multi) {
+        var toSelect;
+        if (!multi && this._selection.multi === true) {
+          toSelect = this.selectedValues.length > 0 ? this.selectedValues[0] : this.required ? this._indexToValue(0) : null;
+          this.selectedValues = null;
+          this._selection.clear();
+          this._selection.multi = false;
+          this.selected = toSelect;
+        } else if (multi && this._selection.multi === false) {
+          toSelect = this.selected;
+          this._selection.clear();
+          this._selection.multi = true;
+          this.selected = null;
+          this.selectedValues = [toSelect];
+        } else {
+          this._selection.multi = multi;
+        }
+      },
+      _validateSelection: function() {
+        if (!this.multi && this.items.length > 0) {
+          if (!this._validateValue(this.selected)) {
+            this.selected = (this.required && !this._getResetItem()) ? this._indexToValue(0) : null;
+          }
+        }
+        var resetItem = this._getResetItem();
+        if (this.required && !resetItem) {
+          if (this.items.length > 0) {
+            if (this.multi && (!Array.isArray(this.selectedValues) || this.selectedValues.length < 1)) {
+              if (Array.isArray(this.selectedValues)) {
+                this.selectedValues.push(this._indexToValue(0));
+              } else {
+                this.selectedValues = [this._indexToValue(0)];
+              }
+              this._selection.setItemSelected(this.items[0], true);
+            } else if (!this.multi && (this.selected === undefined || this.selected == null)) {
+              this.selected = this._indexToValue(0);
+              this._selection.setItemSelected(this.items[0], true);
+            }
+          }
+        } else if (resetItem && (!this.selectedValues || this.selectedValues.length < 1)) {
+          this.selectedValues = [this._indexToValue(this.items.indexOf(resetItem))];
+          this._selection.setItemSelected(resetItem, true);
+        }
+      },
+      _validateValue: function(value) {
+        if (value === undefined || value === null || value === '')
+          return (this.required && !this._getResetItem()) ? false : true;
+        for (var i = 0; i < this.items.length; i++) {
+          var itemValue = this._indexToValue(i);
+          if (itemValue == value)
+            return true;
+        }
+        return false;
+      },
+      _getResetItem: function() {
+        if (!this.multi || this.attrForReset == null || this.attrForReset == '') {
+          return null;
+        }
+        for (var i = 0; i < this.items.length; i++) {
+          if (this.items[i].hasAttribute(this.attrForReset))
+            return this.items[i];
+        }
+        return null;
+      },
+      _refreshStyles: function() {
+        for (var i = 0; i < this.items.length; i++) {
+          var value = this._indexToValue(i);
+          var selected = false;
+          if (this.multi && Array.isArray(this.selectedValues)) {
+            selected = this.selectedValues.indexOf(value) >= 0;
+          } else if (!this.multi && this.selected != null) {
+            selected = this.selected == value;
+          }
+          this._applySelection(this.items[i], selected);
+        }
+      },
+      _updateSelected: function() {
+        if (this.multi) {
+          var resetItem = this._getResetItem();
+          if (this.multi && !Array.isArray(this.selectedValues)) {
+            if (this._validateValue(this.selectedValues)) {
+              this.selectedValues = [this.selectedValues];
+            } else if (resetItem) {
+              this.selectedValues = [this._indexToValue(this.items.indexOf(resetItem))];
+            } else {
+              this.selectedValues = [];
+            }
+            return;
+          }
+          var newValues = this.selectedValues.slice();
+          var changes = false;
+          for (var i = 0; i < this.selectedValues.length; i++) {
+            if (resetItem && this._valueToItem(this.selectedValues[i]) == resetItem && this.selectedValues.length > 1) {
+              this.selectedValues = [this.selectedValues[i]];
+              return;
+            } else if (!this._validateValue(this.selectedValues[i])) {
+              changes = true;
+              newValues.splice(newValues.indexOf(this.selectedValues[i]), 1);
+            }
+          }
+          if (changes) {
+            this.selectedValues = newValues;
+            return;
+          }
+          this._selectMulti(this.selectedValues);
+        } else {
+          this._selectSelected(this.selected);
+        }
+      },
+      _selectMulti: function(values) {
+        this._selection.clear();
+        if (values) {
+          for (var i = 0; i < values.length; i++) {
+            this._selection.setItemSelected(this._valueToItem(values[i]), true);
+          }
+        }
+        this._validateSelection();
+      },
+      _selectionChange: function() {
+        var s = this._selection.get();
+        if (this.multi) {
+          this._setSelectedItems(s);
+        } else {
+          this._setSelectedItems([s]);
+          this._setSelectedItem(s);
+        }
+        this._validateSelection();
+      },
+      _toggleSelected: function(value) {
+        var i = this.selectedValues.indexOf(value);
+        var unselected = i < 0;
+        if (unselected) {
+          var resetItem = this._getResetItem();
+          var item = this._valueToItem(value);
+          if (resetItem && resetItem == item) {
+            this._selection.clear();
+            this.selectedValues = [value];
+          } else {
+            this.selectedValues.push(value);
+            if (resetItem) {
+              var resetIndex = this.selectedValues.indexOf(this._indexToValue(this.items.indexOf(resetItem)));
+              if (resetIndex >= 0) {
+                this.selectedValues.splice(resetIndex, 1);
+                this._selection.setItemSelected(resetItem, false);
+              }
+            }
+          }
+          this._selection.setItemSelected(item, true);
+        } else if (!(this.required && !this._getResetItem()) || this.selectedValues.length > 1) {
+          this.selectedValues.splice(i, 1);
+          this._selection.setItemSelected(this._valueToItem(value), false);
+        }
+      }
+    }, Polymer.IronSelectableBehavior
+  ];
+
+</script>

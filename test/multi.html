@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<!--
+  This file was adapted from the Polymer Project. Plastikit is not affiliated with the original
+  authors.
+  
+  The original copyright notice is below.
+-->
+<!--
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+<head>
+
+  <title>plastik-selector-multi</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+  <script src="../../test-fixture/test-fixture-mocha.js"></script>
+
+  <link rel="import" href="../../test-fixture/test-fixture.html">
+  <link rel="import" href="../plastik-selector.html">
+
+  <style>
+    .iron-selected {
+      background: #ccc;
+    }
+  </style>
+
+</head>
+<body>
+
+  <test-fixture id="test">
+    <template>
+      <plastik-selector multi>
+        <div>Item 0</div>
+        <div>Item 1</div>
+        <div>Item 2</div>
+        <div>Item 3</div>
+        <div>Item 4</div>
+      </plastik-selector>
+    </template>
+  </test-fixture>
+
+  <script>
+    suite('multi', function() {
+      var s;
+      
+      setup(function () {
+        s = fixture('test');
+      });
+      
+      test('multi property is true when multi attribute is specified', function() {
+        assert.isTrue(s.multi);
+      });
+      
+      test('property values are set to proper defaults', function() {
+        assert.equal(s.selectedValues, undefined);
+        assert.equal(s.selectedClass, 'iron-selected');
+        assert.equal(s.required, false);
+        assert.equal(s.attrForReset, null);
+        assert.equal(s.items.length, 5);
+      });
+      
+      test('selects correct items when selectedValues is set to an array of valid values', function() {
+        s.selectedValues = [0, 2];
+        // check selected class
+        assert.isTrue(s.children[0].classList.contains('iron-selected'));
+        assert.isTrue(s.children[2].classList.contains('iron-selected'));
+        // check selectedItems
+        assert.equal(s.selectedItems.length, 2);
+        assert.equal(s.selectedItems[0], s.children[0]);
+        assert.equal(s.selectedItems[1], s.children[2]);
+      });
+      
+      test('selects correct items when items are clicked/tapped', function() {
+        // click items to select them
+        s.children[0].dispatchEvent(new CustomEvent('click', {bubbles: true}));
+        s.children[2].dispatchEvent(new CustomEvent('click', {bubbles: true}));
+        // check selected class
+        assert.isTrue(s.children[0].classList.contains('iron-selected'));
+        assert.isTrue(s.children[2].classList.contains('iron-selected'));
+        // check selectedItems
+        assert.equal(s.selectedItems.length, 2);
+        assert.equal(s.selectedItems[0], s.children[0]);
+        assert.equal(s.selectedItems[1], s.children[2]);
+      });
+      
+      test('fires iron-select/deselect events', function() {
+        // set up listener for iron-select event
+        var selectEventCounter = 0;
+        s.addEventListener('iron-select', function(e) {
+          selectEventCounter++;
+        });
+        // set up listener for iron-deselect event
+        var deselectEventCounter = 0;
+        s.addEventListener('iron-deselect', function(e) {
+          deselectEventCounter++;
+        });
+        // click on item to select it
+        s.children[0].dispatchEvent(new CustomEvent('click', {bubbles: true}));
+        // check that events fired
+        assert.equal(selectEventCounter, 1);
+        assert.equal(deselectEventCounter, 0);
+        // clicking on a selected item should deselect it
+        s.children[0].dispatchEvent(new CustomEvent('click', {bubbles: true}));
+        // check that selectedValues has been updated
+        assert.equal(s.selectedValues.length, 0);
+        // check that there is no selected class
+        assert.isFalse(s.children[0].classList.contains('iron-selected'));
+        // check that events fired
+        assert.equal(selectEventCounter, 1);
+        assert.equal(deselectEventCounter, 1);
+      });
+      
+      test('toggling multi attribute works as expected', function() {
+        s.selectedValues = [0, 2];
+        var first = s.selectedValues[0];
+        var second = s.selectedValues[1];
+        // disable multi-selection
+        s.multi = false;
+        // selectedValues should be null
+        assert.equal(s.selectedValues, null);
+        // selected should be the first value from the old array
+        assert.equal(s.selected, first);
+        // selected item should not have selected class
+        assert.isTrue(s.children[first].classList.contains('iron-selected'));
+        // item with discarded value from old array should not have selected class
+        assert.isFalse(s.children[second].classList.contains('iron-selected'));
+        // select a different item
+        s.children[3].dispatchEvent(new CustomEvent('click', {bubbles: true}));
+        // only currently selected item should have selected class
+        assert.isFalse(s.children[first].classList.contains('iron-selected'));
+        assert.isTrue(s.children[3].classList.contains('iron-selected'));
+        // enable multi-selection
+        s.multi = true;
+        // selected should be null
+        assert.equal(s.selected, null);
+        // selectedValues should be an single-item array with the value from selected
+        assert.isTrue(Array.isArray(s.selectedValues));
+        assert.equal(s.selectedValues.length, 1);
+        assert.equal(s.selectedValues[0], 3);
+        // select several items
+        s.children[0].dispatchEvent(new CustomEvent('click', {bubbles: true}));
+        s.children[1].dispatchEvent(new CustomEvent('click', {bubbles: true}));
+        // verify selectedValues is updated properly
+        assert.equal(s.selectedValues.length, 3);
+        assert.equal(s.selectedValues[0], 3);
+        assert.equal(s.selectedValues[1], 0);
+        assert.equal(s.selectedValues[2], 1);
+      });
+    });
+  </script>
+
+</body>
+</html>

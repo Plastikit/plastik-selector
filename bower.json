@@ -1,0 +1,38 @@
+{
+  "name": "plastik-selector",
+  "version": "0.1.0",
+  "authors": [
+    "The Plastikit Authors <developers@plastikit.org>"
+  ],
+  "keywords": [
+    "web-components",
+    "web-component",
+    "polymer",
+    "selector",
+    "selection",
+    "multiselect"
+  ],
+  "main": "plastik-selector.html",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/Plastikit/plastik-selector"
+  },
+  "license": "BSD-3-Clause",
+  "homepage": "https://www.plastikit.org/0.9/components/plastik-selector/",
+  "ignore": [
+    "/.*",
+    "/test/",
+    "/demo/"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#v0.9.0-rc.1",
+    "iron-selector": "PolymerElements/iron-selector#^v0.9.1"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^0.9.0",
+    "test-fixture": "PolymerElements/test-fixture#^0.9.0",
+    "web-component-tester": "*",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#~0.6.0"
+  }
+}

@@ -1,0 +1,170 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+
+    <title>plastik-selector</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <link href="//fonts.googleapis.com/css?family=RobotoDraft:regular,bold,italic,thin,light,bolditalic,black,medium|Source+Code+Pro&amp;lang=en" rel="stylesheet" type="text/css">
+    <link rel="import" href="../plastik-selector.html">
+    <link rel="import" href="../../iron-selector/iron-selector.html">
+
+    <style type="text/css">
+      html {
+        padding: 0;
+        margin: 0;
+      }
+      
+      body {
+        font: normal normal 400 14px RobotoDraft,Roboto,sans-serif;
+        background: #eee;
+        margin: 0;
+        padding: 8px 0;
+      }
+      
+      @media (max-width: 816px) {
+        body {
+          padding: 0;
+        }
+      }
+      
+      .container {
+        margin: auto;
+        max-width: 800px;
+        background: #fafafa;
+        box-shadow: 0 1.5px 4px rgba(0, 0, 0, 0.24), 0 1.5px 6px rgba(0, 0, 0, 0.12);
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        padding: 16px;
+      }
+      
+      h2 {
+        font-size: 24px;
+        font-weight: 300;
+      }
+      
+      h3 {
+        font-size: 16px;
+        font-weight: 400;
+      }
+      
+      hr {
+        border: none;
+        height: 1px;
+        background: rgba(0, 0, 0, .12);
+      }
+      
+      p, .nothing {
+        color: rgba(0, 0, 0, .54);
+      }
+      
+      html, body, p span {
+        color: rgba(0, 0, 0, .87);
+      }
+      
+      pre {
+        padding: 16px;
+        max-width: 832px;
+        white-space: pre-wrap;
+        font: normal normal 400 14px/16px 'Source Code Pro',Monaco,Menlo,Consolas,'Courier New',monospace;
+        background: #f5f5f5;
+      }
+      
+      plastik-selector div {
+        padding: 8px;
+        background: #f5f5f5;
+        -webkit-user-select: none;
+        user-select: none;
+        cursor: pointer;
+      }
+      
+      plastik-selector div.iron-selected {
+        background: #B3E5FC;
+      }
+    </style>
+
+  </head>
+  <body>
+    
+    <div class="container">
+      
+      <h2>&lt;plastik-selector&gt; demo</h2>
+      
+      <hr>
+  
+      <h3>Default</h3>
+  
+      <plastik-selector>
+        <div>Item 0</div>
+        <div>Item 1</div>
+        <div>Item 2</div>
+        <div>Item 3</div>
+        <div>Item 4</div>
+      </plastik-selector>
+      
+      <hr>
+  
+      <h3>With required attribute</h3>
+  
+      <plastik-selector required>
+        <div>Item 0</div>
+        <div>Item 1</div>
+        <div>Item 2</div>
+        <div>Item 3</div>
+        <div>Item 4</div>
+      </plastik-selector>
+      
+      <hr>
+  
+      <h3>Multi-select</h3>
+  
+      <plastik-selector multi selected-values="[0,2]">
+        <div>Item 0</div>
+        <div>Item 1</div>
+        <div>Item 2</div>
+        <div>Item 3</div>
+        <div>Item 4</div>
+      </plastik-selector>
+      
+      <hr>
+  
+      <h3>Multi-select with required attribute</h3>
+  
+      <plastik-selector multi required>
+        <div>Item 0</div>
+        <div>Item 1</div>
+        <div>Item 2</div>
+        <div>Item 3</div>
+        <div>Item 4</div>
+      </plastik-selector>
+      
+      <hr>
+  
+      <h3>Multi-select with reset item</h3>
+  
+      <plastik-selector multi attr-for-reset="reset">
+        <div reset>Reset</div>
+        <div>Item 0</div>
+        <div>Item 1</div>
+        <div>Item 2</div>
+        <div>Item 3</div>
+        <div>Item 4</div>
+      </plastik-selector>
+      
+      <hr>
+  
+      <h3>Custom value attribute (attrForSelected)</h3>
+  
+      <plastik-selector selected="foo" attr-for-selected="name">
+        <div name="foo">Foo</div>
+        <div name="bar">Bar</div>
+        <div name="zot">Zot</div>
+      </plastik-selector>
+      
+    </div>
+
+  </body>
+</html>
