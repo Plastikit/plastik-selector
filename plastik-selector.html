@@ -88,8 +88,8 @@ default to selecting the reset item when none others are selected. The reset ite
 the same time as any other item, and there can only be one reset item per `plastik-selector`.
 
 To enable use of a reset item, set `attrForReset` to the name of the attribute that will denote your
-reset item. When `attrForReset` is set to any value, the functionality provided by `required` is
-disabled.
+reset item. `attrForReset` cannot be used together with `required`: when `attrForReset` is set to any
+value, the functionality provided by `required` is disabled.
 
 # Example
 ```html
