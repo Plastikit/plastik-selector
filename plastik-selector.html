@@ -51,12 +51,12 @@ set `attrForSelected` to the name of the attribute. For example, if you want to 
       <div name="zot">Zot</div>
     </plastik-selector>
  ```
- ## Requiring selection
+## Requiring selection
  
  If you would like to enforce that at least one item is selected at all times, set `required` to
  true. If no default selection is specified, `selected` will default to the first item in the list.
  
- # Example
+# Example
  ```html
      <plastik-selector required>
        <div>Item 1</div>
@@ -72,7 +72,7 @@ set `attrForSelected` to the name of the attribute. For example, if you want to 
  `attrForSelected` is specified, attribute values are used instead. `selectedValues` returns or sets
  an array of item indexes or attribute values. To enable multi-selection, set `multi` to true.
  
- # Example
+# Example
  ```html
      <plastik-selector multi selected-values="[0,2]">
        <div>Item 1</div>
