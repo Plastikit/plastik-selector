@@ -29,7 +29,7 @@ the same events and classes as `iron-selector` does.
 Clicking or tapping on an item selects it. `selected` indicates which item is being selected.
 By default, the index of the item is used.
 
-# Example
+### Example
 ```html
     <plastik-selector selected="0">
       <div>Item 1</div>
@@ -43,7 +43,7 @@ If you want to use the attribute value of an element for `selected` instead of t
 set `attrForSelected` to the name of the attribute. For example, if you want to select items by
 `name`, set `attrForSelected` to `name`.
 
-# Example
+### Example
 ```html
     <plastik-selector attr-for-selected="name" selected="foo">
       <div name="foo">Foo</div>
@@ -56,7 +56,7 @@ set `attrForSelected` to the name of the attribute. For example, if you want to 
  If you would like to enforce that at least one item is selected at all times, set `required` to
  true. If no default selection is specified, `selected` will default to the first item in the list.
  
-# Example
+### Example
  ```html
      <plastik-selector required>
        <div>Item 1</div>
@@ -72,7 +72,7 @@ set `attrForSelected` to the name of the attribute. For example, if you want to 
  `attrForSelected` is specified, attribute values are used instead. `selectedValues` returns or sets
  an array of item indexes or attribute values. To enable multi-selection, set `multi` to true.
  
-# Example
+### Example
  ```html
      <plastik-selector multi selected-values="[0,2]">
        <div>Item 1</div>
@@ -91,7 +91,7 @@ To enable use of a reset item, set `attrForReset` to the name of the attribute t
 reset item. `attrForReset` cannot be used together with `required`: when `attrForReset` is set to any
 value, the functionality provided by `required` is disabled.
 
-# Example
+### Example
 ```html
     <plastik-selector multi attr-for-reset="reset">
       <div reset>Any</div>
@@ -104,7 +104,7 @@ value, the functionality provided by `required` is disabled.
 
 `plastik-selector` is not styled. Use the `iron-selected` CSS class to style the selected element.
 
-# Example
+### Example
 ```html
     <style>
       .iron-selected {

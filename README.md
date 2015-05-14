@@ -1,13 +1,23 @@
 # plastik-selector
 
- > _See more at the [component page](http://www.plastikit.org/0.9/components/plastik-selector/)_ 
-
 `plastik-selector` extends `iron-selector` to provide several extra features in addition to basic
 selection, namely required selections and reset items. `plastik-selector` is very similar to
 `iron-selector` and meant to be able to function as a drop-in replacement, and therefore it uses
 the same events and classes as `iron-selector` does.
 
-## Selection
+Demos and documentation are available on the [component page](https://www.plastikit.org/0.9/components/plastik-selector/).
+
+Pull requests are always welcome. If you encounter any bugs, please feel free to [submit an issue](https://github.com/Plastikit/plastik-selector/issues/new/).
+
+## Installation
+
+```sh
+bower install Plastikit/plastik-option-list --save
+```
+
+## Basic usage
+
+ > _See more at the [component page](http://www.plastikit.org/0.9/components/plastik-selector/)_ 
 
 Clicking or tapping on an item selects it. `selected` indicates which item is being selected.
 By default, the index of the item is used.
