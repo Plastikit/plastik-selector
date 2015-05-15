@@ -25,13 +25,13 @@
     "/demo/"
   ],
   "dependencies": {
-    "polymer": "Polymer/polymer#v0.9.0-rc.1",
-    "iron-selector": "PolymerElements/iron-selector#^v0.9.1"
+    "polymer": "Polymer/polymer#^0.9.0",
+    "iron-selector": "PolymerElements/iron-selector#^0.9.1"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^0.9.0",
     "test-fixture": "PolymerElements/test-fixture#^0.9.0",
     "web-component-tester": "*",
-    "webcomponentsjs": "webcomponents/webcomponentsjs#~0.6.0"
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^0.6.0"
   }
 }
