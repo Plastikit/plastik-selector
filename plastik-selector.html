@@ -16,8 +16,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="plastik-multi-selectable.html">
 
-
-<!--
+<script>
+/**
  
 `plastik-selector` extends `iron-selector` to provide several extra features in addition to basic
 selection, namely required selections and reset items. `plastik-selector` is very similar to
@@ -118,13 +118,8 @@ value, the functionality provided by `required` is disabled.
       <div>Item 3</div>
     </plastik-selector>
 ```
-@group Plastikit Core Elements
-@element plastik-selector
-@homepage plastikit.org
--->
-<dom-module id="plastik-selector"></dom-module>
-
-<script>
+@demo demo/index.html
+*/
   Polymer({
     is: 'plastik-selector',
     behaviors: [

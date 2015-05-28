@@ -16,15 +16,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-selector/iron-selectable.html">
 
-<!--
-`Polymer.PlastikMultiSelectableBehavior` provides advanced multiselect functionality
--->
-
 <script>
 
-  Polymer.PlastikMultiSelectableBehavior = [
-    {
-      properties: {
+   /** @polymerBehavior Polymer.PlastikMultiSelectableBehavior */
+   Polymer.PlastikMultiSelectableBehaviorImpl = {
+     properties: {
         /**
          * If true, multiple items can be selected at a time.
          *
@@ -262,7 +258,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this._selection.setItemSelected(this._valueToItem(value), false);
         }
       }
-    }, Polymer.IronSelectableBehavior
-  ];
+    };
+    
+   /** @polymerBehavior */
+   Polymer.PlastikMultiSelectableBehavior = [
+     Polymer.IronSelectableBehavior,
+     Polymer.PlastikMultiSelectableBehaviorImpl
+   ];
 
 </script>
